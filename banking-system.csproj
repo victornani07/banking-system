@@ -46,14 +46,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="forms\SignInForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="forms\SignInForm.Designer.cs">
+      <DependentUpon>SignInForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\SignUpFormBankingData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\SignUpFormBankingData.Designer.cs">
+      <DependentUpon>SignUpFormBankingData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\SignUpFormUserData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\SignUpFormUserData.Designer.cs">
+      <DependentUpon>SignUpFormUserData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="service\TextBoxService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="service\ValidationService.cs" />
+    <Compile Include="utils\ErrorConstants.cs" />
+    <EmbeddedResource Include="forms\SignInForm.resx">
+      <DependentUpon>SignInForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\SignUpFormBankingData.resx">
+      <DependentUpon>SignUpFormBankingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\SignUpFormUserData.resx">
+      <DependentUpon>SignUpFormUserData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
