@@ -1,0 +1,17 @@
+ID,Transaction Type,Sold,Card Owner,Card Number,Username
+0,Deposit,1234,Aurel Vlaicu,4562 1234 6215 1235,madalinademain
+0,Withdraw,-1000,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,1234,AurelVlaicu,1234123412341234,madalinademain
+0,Deposit,134,Aurel Vlaicu,1234123412341234,madalinademain
+0,Deposit,12,Aurel Vlaicu,1234123412341234,madalinademain
+0,Deposit,1234,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,123,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,123,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,123,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Withdraw,-150,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,1234,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,1234,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,123,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,123,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Deposit,54,Madalina Demian,1456 2345 1235 1111,madalinademain
+0,Withdraw,123,Madalina Demian,1456 2345 1235 1111,madalinademain

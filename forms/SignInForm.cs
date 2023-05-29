@@ -1,17 +1,45 @@
 ﻿using banking_system.forms;
+using banking_system.models;
+using banking_system.persistence;
+using banking_system.service;
+using banking_system.utils;
+using Npgsql;
 using System;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace banking_system {
+namespace banking_system
+{
 
     public partial class SignInForm : Form {
+
+        private UserService UserService;
+        private ValidationService ValidationService;
+
         public SignInForm() {
             InitializeComponent();
         }
 
-        private void handleSignInButtonClick(object sender, MouseEventArgs e) 
+        private void HandleSignInButtonClick(object sender, MouseEventArgs e) 
         {
-            
+            string username = this.usernameTextBox.Text;
+            string password = this.passwordTextBox.Text;
+            User user = UserService.GetUserByUsername(username);
+            string loginValidationResult = ValidationService.ValidateLoginCredentials(user, username, password);
+            if (!loginValidationResult.Equals(""))
+            {
+                this.errorLabel.Text = ErrorConstants.AUTHENTICATION_UNSUCCESSFUL + "\n" + loginValidationResult;
+                LabelService.CenterLabel(this, this.errorLabel);
+                this.errorLabel.Visible = true;
+            } else
+            {
+                UserMenu userMenu = new UserMenu();
+                userMenu.username = username;
+                userMenu.Show();
+                this.Hide();
+            }
         }
 
         private void HandleUsernameTextBoxTyping(object sender, KeyPressEventArgs e) 
@@ -54,6 +82,29 @@ namespace banking_system {
             SignUpFormUserData signUpFormUserData = new SignUpFormUserData();
             signUpFormUserData.Show();
             this.Hide();
+        }
+
+        private void HandleSignInFormLoad(object sender, EventArgs e)
+        {
+            UserService = new UserService();
+            ValidationService = new ValidationService();
+        }
+
+        private void PaintForm(object sender, PaintEventArgs e)
+        {
+            int R1 = 186, G1 = 83, B1 = 112;
+            int R2 = 244, G2 = 226, B2 = 216;
+            Graphics graphics = e.Graphics;
+            Pen pen = new Pen(Color.FromArgb(R1, G1, B1), 1);
+            Rectangle rectangle = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            LinearGradientBrush lgb = new LinearGradientBrush(
+                rectangle, 
+                Color.FromArgb(R1, G1, B1), 
+                Color.FromArgb(R2, G2, B2), 
+                LinearGradientMode.Vertical
+            );
+            graphics.FillRectangle(lgb, rectangle);
+            graphics.DrawRectangle(pen, rectangle);
         }
     }
 }

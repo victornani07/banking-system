@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 
 namespace banking_system
@@ -39,6 +41,7 @@ namespace banking_system
             this.passwordLabel = new System.Windows.Forms.Label();
             this.signUpButton = new System.Windows.Forms.Button();
             this.loginLabel = new System.Windows.Forms.Label();
+            this.errorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // usernameTextBox
@@ -70,19 +73,24 @@ namespace banking_system
             // signInButton
             // 
             this.signInButton.FlatAppearance.BorderSize = 1230;
+            this.signInButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.signInButton.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.signInButton.Location = new System.Drawing.Point(562, 480);
+            this.signInButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.signInButton.Location = new System.Drawing.Point(562, 538);
             this.signInButton.Name = "signInButton";
             this.signInButton.Size = new System.Drawing.Size(219, 51);
             this.signInButton.TabIndex = 2;
             this.signInButton.Text = "Sign In ";
+            this.signInButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.signInButton.UseVisualStyleBackColor = true;
-            this.signInButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.handleSignInButtonClick);
+            this.signInButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HandleSignInButtonClick);
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
+            this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
             this.usernameLabel.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.usernameLabel.ForeColor = System.Drawing.Color.Transparent;
             this.usernameLabel.Location = new System.Drawing.Point(495, 210);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(83, 19);
@@ -92,7 +100,9 @@ namespace banking_system
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
+            this.passwordLabel.BackColor = System.Drawing.Color.Transparent;
             this.passwordLabel.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.passwordLabel.ForeColor = System.Drawing.Color.Transparent;
             this.passwordLabel.Location = new System.Drawing.Point(495, 320);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(79, 19);
@@ -103,8 +113,9 @@ namespace banking_system
             // 
             this.signUpButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.signUpButton.FlatAppearance.BorderSize = 1230;
+            this.signUpButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.signUpButton.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.signUpButton.Location = new System.Drawing.Point(562, 562);
+            this.signUpButton.Location = new System.Drawing.Point(562, 620);
             this.signUpButton.Name = "signUpButton";
             this.signUpButton.Size = new System.Drawing.Size(219, 51);
             this.signUpButton.TabIndex = 5;
@@ -115,18 +126,35 @@ namespace banking_system
             // loginLabel
             // 
             this.loginLabel.AutoSize = true;
+            this.loginLabel.BackColor = System.Drawing.Color.Transparent;
             this.loginLabel.Font = new System.Drawing.Font("Ubuntu", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.loginLabel.ForeColor = System.Drawing.Color.Transparent;
             this.loginLabel.Location = new System.Drawing.Point(587, 46);
             this.loginLabel.Name = "loginLabel";
             this.loginLabel.Size = new System.Drawing.Size(194, 66);
             this.loginLabel.TabIndex = 6;
             this.loginLabel.Text = "LOGIN";
             // 
+            // errorLabel
+            // 
+            this.errorLabel.AutoSize = true;
+            this.errorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.errorLabel.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(15)))), ((int)(((byte)(2)))));
+            this.errorLabel.Location = new System.Drawing.Point(495, 443);
+            this.errorLabel.Name = "errorLabel";
+            this.errorLabel.Size = new System.Drawing.Size(53, 19);
+            this.errorLabel.TabIndex = 21;
+            this.errorLabel.Text = "label1";
+            this.errorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.errorLabel.Visible = false;
+            // 
             // SignInForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1329, 767);
+            this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.loginLabel);
             this.Controls.Add(this.signUpButton);
             this.Controls.Add(this.passwordLabel);
@@ -137,6 +165,8 @@ namespace banking_system
             this.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "SignInForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.HandleSignInFormLoad);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintForm);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,10 +177,11 @@ namespace banking_system
         private System.Windows.Forms.TextBox usernameTextBox;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.Button signInButton;
-        private Label usernameLabel;
-        private Label passwordLabel;
+        private System.Windows.Forms.Label usernameLabel;
+        private System.Windows.Forms.Label passwordLabel;
         private Button signUpButton;
-        private Label loginLabel;
+        private System.Windows.Forms.Label loginLabel;
+        private System.Windows.Forms.Label errorLabel;
     }
 }
 

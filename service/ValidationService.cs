@@ -1,4 +1,5 @@
-﻿using banking_system.utils;
+﻿using banking_system.models;
+using banking_system.utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace banking_system.service
 
         private const string SECURITY_CODE_PATTERN = "^[0-9]{3,4}$";
 
+        private const string ONLY_NUMBERS_PATTERN = "^[0-9]*$";
+
         public ValidationService() { }
 
         public string IsNameValid(string input)
@@ -38,16 +41,24 @@ namespace banking_system.service
                 : ErrorConstants.INVALID_NAME;
         }
 
-        public string IsUsernameValid(string input)
+        public string IsUsernameValid(string input, User user)
         {
             if (input.Equals("") || input.Equals("Enter an username..."))
             {
                 return ErrorConstants.EMPTY_FIELD;
             }
 
-            return Regex.Match(input, USERNAME_PATTERN).Success
-                ? ""
-                : ErrorConstants.INVALID_USERNAME;
+            if (!Regex.Match(input, USERNAME_PATTERN).Success)
+            {
+                return ErrorConstants.INVALID_USERNAME;
+            }
+
+            if (user != null && user.Username.Equals(input))
+            {
+                return ErrorConstants.USER_ALREADY_EXISTS;
+            }
+
+            return "";
         }
 
         public string IsPasswordValid(string password, string confirmPassword)
@@ -111,6 +122,38 @@ namespace banking_system.service
             return Regex.Match(input, SECURITY_CODE_PATTERN).Success
                 ? ""
                 : ErrorConstants.INVALID_SECURITY_CODE;
+        }
+
+        public string ValidateLoginCredentials(User user, string username, string password)
+        {
+            if (username.Equals("") || username.Equals("Type your username...") || password.Equals("") || password.Equals("Type your password..."))
+            {
+                return ErrorConstants.EMPTY_FIELD;
+            }
+
+            if (user == null)
+            {
+                return ErrorConstants.INVALID_LOGIN_USERNAME;
+            }
+
+            if (!user.Password.Equals(password))
+            {
+                return ErrorConstants.INVALID_LOGIN_PASSWORD;
+            }
+
+            return "";
+        }
+
+        public string ValidateDepositAmount(string input)
+        {
+            if (input.Equals(""))
+            {
+                return ErrorConstants.EMPTY_FIELD;
+            }
+
+            return Regex.Match(input, ONLY_NUMBERS_PATTERN).Success
+                ? ""
+                : ErrorConstants.DEPOSIT_FORMAT_ERROR;
         }
     }
 }

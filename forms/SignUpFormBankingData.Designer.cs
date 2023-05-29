@@ -39,6 +39,7 @@
             this.securityCodeTextBox = new System.Windows.Forms.TextBox();
             this.registerButton = new System.Windows.Forms.Button();
             this.errorLabel = new System.Windows.Forms.Label();
+            this.backButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bankingDataLabel
@@ -159,20 +160,35 @@
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
+            this.errorLabel.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(15)))), ((int)(((byte)(2)))));
             this.errorLabel.Location = new System.Drawing.Point(550, 608);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(51, 20);
+            this.errorLabel.Size = new System.Drawing.Size(53, 19);
             this.errorLabel.TabIndex = 21;
             this.errorLabel.Text = "label1";
             this.errorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.errorLabel.Visible = false;
+            // 
+            // backButton
+            // 
+            this.backButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.backButton.FlatAppearance.BorderSize = 1230;
+            this.backButton.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.backButton.Location = new System.Drawing.Point(622, 766);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(219, 51);
+            this.backButton.TabIndex = 22;
+            this.backButton.Text = "Back";
+            this.backButton.UseVisualStyleBackColor = true;
+            this.backButton.Click += new System.EventHandler(this.HandleBackButtonClick);
             // 
             // SignUpFormBankingData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1486, 921);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.registerButton);
             this.Controls.Add(this.securityCodeTextBox);
@@ -186,6 +202,7 @@
             this.Controls.Add(this.bankingDataLabel);
             this.Name = "SignUpFormBankingData";
             this.Text = "SignUpFormBankingData";
+            this.Load += new System.EventHandler(this.HandleSignUpFormBankingDataLoad);
             this.Click += new System.EventHandler(this.HandleCardOwnerTextBoxClickEvent);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -205,5 +222,6 @@
         private System.Windows.Forms.TextBox securityCodeTextBox;
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.Label errorLabel;
+        private System.Windows.Forms.Button backButton;
     }
 }
