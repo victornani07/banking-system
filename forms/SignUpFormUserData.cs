@@ -1,4 +1,5 @@
-﻿using banking_system.service;
+﻿using banking_system.models;
+using banking_system.service;
 using banking_system.utils;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ namespace banking_system.forms
 {
     public partial class SignUpFormUserData : Form
     {
+
+        private ValidationService ValidationService;
+        private UserService UserService;
+
         public SignUpFormUserData()
         {
             InitializeComponent();
@@ -109,49 +114,60 @@ namespace banking_system.forms
 
         private void HandleRegistration(object sender, MouseEventArgs e)
         {
-            //string firstName = this.firstNameTextBox.Text;
-            //string lastName = this.lastNameTextBox.Text;
-            //string username = this.usernameTextBox.Text;
-            //string password = this.passwordTextBox.Text;
-            //string confirmPassword = this.confirmPasswordTextBox.Text;
+            string firstName = this.firstNameTextBox.Text;
+            string lastName = this.lastNameTextBox.Text;
+            string username = this.usernameTextBox.Text;
+            string password = this.passwordTextBox.Text;
+            string confirmPassword = this.confirmPasswordTextBox.Text;
+            User _user = UserService.GetUserByUsername(username);
 
-            //ValidationService validationService = new ValidationService();
+            string firstNameValidationResult = ValidationService.IsNameValid(firstName);
+            string lastNameValidationResult = ValidationService.IsNameValid(lastName);
+            string usernameValidationResult = ValidationService.IsUsernameValid(username, _user);
+            string passwordValidationResult = ValidationService.IsPasswordValid(password, confirmPassword);
+            bool isRegistrationValid = firstNameValidationResult.Equals("") &&
+                lastNameValidationResult.Equals("") &&
+                usernameValidationResult.Equals("") &&
+                passwordValidationResult.Equals("");
 
-            //string firstNameValidationResult = validationService.IsNameValid(firstName);
-            //string lastNameValidationResult = validationService.IsNameValid(lastName);
-            //string usernameValidationResult = validationService.IsUsernameValid(username);
-            //string passwordValidationResult = validationService.IsPasswordValid(password, confirmPassword);
-            //bool isRegistrationValid = firstNameValidationResult.Equals("") &&
-            //    lastNameValidationResult.Equals("") &&
-            //    usernameValidationResult.Equals("") &&
-            //    passwordValidationResult.Equals("");
+            if (!isRegistrationValid)
+            {
+                this.errorLabel.Text = ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n";
+                if (!firstNameValidationResult.Equals(""))
+                {
+                    this.errorLabel.Text += firstNameValidationResult;
+                } else if (!lastNameValidationResult.Equals(""))
+                {
+                    this.errorLabel.Text += lastNameValidationResult;
+                } else if (!usernameValidationResult.Equals(""))
+                {
+                    this.errorLabel.Text += usernameValidationResult;
+                } else if (!passwordValidationResult.Equals(""))
+                {
+                    this.errorLabel.Text += passwordValidationResult;
+                }
+                LabelService.CenterLabel(this, this.errorLabel);
+                this.errorLabel.Visible = true;
+            } else
+            {
+                User user = new User(firstName, lastName, username, password);
+                string userString = user.ToString();
+                
+                int success = UserService.SaveUser(user);
 
-            //if (!isRegistrationValid)
-            //{
-            //    this.errorLabel.Text = ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n";
-            //    if (!firstNameValidationResult.Equals(""))
-            //    {
-            //        this.errorLabel.Text += firstNameValidationResult;
-            //    } else if (!lastNameValidationResult.Equals(""))
-            //    {
-            //        this.errorLabel.Text += lastNameValidationResult;
-            //    } else if (!usernameValidationResult.Equals(""))
-            //    {
-            //        this.errorLabel.Text += usernameValidationResult;
-            //    } else if (!passwordValidationResult.Equals(""))
-            //    {
-            //        this.errorLabel.Text += passwordValidationResult;
-            //    }
-
-            //    this.errorLabel.Visible = true;
-            //} else
-            //{
-                SignUpFormBankingData signUpFormBankingData = new SignUpFormBankingData();
-                signUpFormBankingData.Show();
-                this.Hide();
-            //}
-
-
+                if (success == 0)
+                {
+                    this.errorLabel.Text = ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n" + ErrorConstants.CARD_WAS_NOT_SAVED;
+                    LabelService.CenterLabel(this, this.errorLabel);
+                    this.errorLabel.Visible = true;
+                } else
+                {
+                    FileService.SaveToCsv("D:\\Dox\\Projects\\banking-system\\files\\users.csv", userString);
+                    SignInForm signInForm = new SignInForm();
+                    signInForm.Show();
+                    this.Hide();
+                }
+            }
         }
 
         private void HandleBackButtonClick(object sender, EventArgs e)
@@ -159,6 +175,12 @@ namespace banking_system.forms
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             this.Hide();
+        }
+
+        private void HandleSignUpFormUserDataLoad(object sender, EventArgs e)
+        {
+            ValidationService = new ValidationService();
+            UserService = new UserService();
         }
     }
 }

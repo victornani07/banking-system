@@ -1,4 +1,7 @@
-﻿using System;
+﻿using banking_system.models;
+using banking_system.service;
+using banking_system.utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +16,16 @@ namespace banking_system.forms
 {
     public partial class SignUpFormBankingData : Form
     {
+        private BankingDataService BankingDataService;
+
+        private ValidationService ValidationService;
+
+        private UserService UserService;
+
+        private CardService CardService;
+
+        public string username { get; set; }
+
         public SignUpFormBankingData()
         {
             InitializeComponent();
@@ -103,9 +116,6 @@ namespace banking_system.forms
                 && expiryDateValidationResult.Equals("")
                 && securityCodeValidationResult.Equals("");
 
-
-            int formWidth = this.Width / 2;
-
             if (!isRegistrationValid)
             {
                 this.errorLabel.Text = utils.ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n";
@@ -123,19 +133,69 @@ namespace banking_system.forms
                     this.errorLabel.Text += securityCodeValidationResult;
                 }
 
+
+                LabelService.CenterLabel(this, this.errorLabel);
                 this.errorLabel.Visible = true;
-
-                int errorLabelCenter = this.errorLabel.Size.Width / 2;
-                int errorLabelHeight = this.errorLabel.Size.Height;
-
+                
             } else
             {
-                SignInForm signInForm = new SignInForm();
-                signInForm.Show();
-                this.Hide();
+                CardData cardData = new CardData(
+                    cardNumber,
+                    cardOwner,
+                    expiryDate,
+                    securityCode
+                );
+                CardData retrievedCardData = CardService.GetCardByData(cardData);
+
+                if (retrievedCardData.CardId <= 0)
+                {
+                    this.errorLabel.Text = ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n" + ErrorConstants.CARD_WAS_NOT_FOUND;
+                    LabelService.CenterLabel(this, this.errorLabel);
+                    this.errorLabel.Visible = true;
+                } else
+                {
+                    User user = UserService.GetUserByUsername(username);
+                    BankingData bankingData = new BankingData(
+                        cardNumber,
+                        cardOwner,
+                        expiryDate,
+                        securityCode,
+                        user.UserId
+                    );
+                    int success = BankingDataService.SaveBankingData(bankingData);
+                    if (success == 1)
+                    {
+                        string bankingDataString = bankingData.ToString();
+                        FileService.SaveToCsv("D:\\Dox\\Projects\\banking-system\\files\\banking-data.csv", bankingDataString);
+                        UserMenu userMenu = new UserMenu();
+                        userMenu.username = username;
+                        userMenu.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        this.errorLabel.Text = ErrorConstants.REGISTRATION_UNSUCCESSFUL + "\n" + ErrorConstants.USER_WAS_NOT_SAVED;
+                        LabelService.CenterLabel(this, this.errorLabel);
+                        this.errorLabel.Visible = true;
+                    }
+                }
             }
         }
 
-        
+        private void HandleSignUpFormBankingDataLoad(object sender, EventArgs e)
+        {
+            BankingDataService = new BankingDataService();
+            ValidationService = new ValidationService();
+            UserService = new UserService();
+            CardService = new CardService();
+        }
+
+        private void HandleBackButtonClick(object sender, EventArgs e)
+        {
+            UserMenu userMenu = new UserMenu();
+            userMenu.username = username;
+            userMenu.Show();
+            this.Hide();
+        }
     }
 }

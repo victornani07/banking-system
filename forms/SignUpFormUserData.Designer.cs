@@ -175,7 +175,7 @@
             this.nextPageButton.Name = "nextPageButton";
             this.nextPageButton.Size = new System.Drawing.Size(191, 46);
             this.nextPageButton.TabIndex = 18;
-            this.nextPageButton.Text = "Next Page";
+            this.nextPageButton.Text = "Register";
             this.nextPageButton.UseVisualStyleBackColor = true;
             this.nextPageButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HandleRegistration);
             // 
@@ -192,16 +192,17 @@
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
+            this.errorLabel.Font = new System.Drawing.Font("SF Pro Display", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(15)))), ((int)(((byte)(2)))));
             this.errorLabel.Location = new System.Drawing.Point(559, 692);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(51, 20);
+            this.errorLabel.Size = new System.Drawing.Size(53, 19);
             this.errorLabel.TabIndex = 20;
             this.errorLabel.Text = "label1";
             this.errorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.errorLabel.Visible = false;
             // 
-            // SignUpForm
+            // SignUpFormUserData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -220,9 +221,10 @@
             this.Controls.Add(this.firstNameLabel);
             this.Controls.Add(this.firstNameTextBox);
             this.Controls.Add(this.signUpLabel);
-            this.Name = "SignUpForm";
+            this.Name = "SignUpFormUserData";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SignUpForm";
+            this.Load += new System.EventHandler(this.HandleSignUpFormUserDataLoad);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -20,6 +20,8 @@ namespace banking_system.utils
 
         public const string REGISTRATION_UNSUCCESSFUL = "The registration was not successfully completed.";
 
+        public const string AUTHENTICATION_UNSUCCESSFUL = "The authentication was unsuccessful.";
+
         public const string INVALID_CARD_NUMBER = "Invalid card number.";
 
         public const string INVALID_CARD_OWNER = "Invalid card owner.";
@@ -27,5 +29,23 @@ namespace banking_system.utils
         public const string INVALID_EXPIRY_DATE = "The expiration date is not valid or does not have the proper format.";
 
         public const string INVALID_SECURITY_CODE = "Invalid security code.";
+
+        public const string INVALID_LOGIN_USERNAME = "Incorrect username.";
+
+        public const string INVALID_LOGIN_PASSWORD = "Incorrect password.";
+
+        public const string USER_WAS_NOT_SAVED = "User was not properly registered. Try again later.";
+
+        public const string USER_ALREADY_EXISTS = "This user already exists.";
+
+        public const string CARD_WAS_NOT_SAVED = "Card was not saved.";
+
+        public const string CARD_WAS_NOT_FOUND = "The following card was not found.";
+
+        public const string DEPOSIT_ERROR = "The deposit action could not be performed.";
+
+        public const string TRANSACTION_ERROR = "Transaction failed.";
+
+        public const string DEPOSIT_FORMAT_ERROR = "The deposit amount does not have the proper format.";
     }
 }
